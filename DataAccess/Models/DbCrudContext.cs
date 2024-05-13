@@ -12,9 +12,7 @@ namespace DataAccess.Models
 
         public DbCrudContext(DbContextOptions<DbCrudContext> options) : base(options)
         {
-        }
-
-        public virtual DbSet<Student> Student { get; set; }
+        }        
         public virtual DbSet<Unidad> Unidades { get; set; }
         public virtual DbSet<Servicio> Servicios { get; set; }
         public virtual DbSet<Proveedor> Proveedores { get; set; }

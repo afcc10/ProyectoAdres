@@ -14,16 +14,16 @@ namespace DependencyInjection
     public static class IoCRegister
     {
         public static IServiceCollection AddRepository(IServiceCollection services)
-        {
-            services.AddScoped<IStudentRepository, StudentRepository>();
+        {            
+            services.AddScoped<IUnidadRepository, UnidadRepository>();
 
             return services;
         }
 
         public static IServiceCollection AddServices(IServiceCollection services)
-        {
-            services.AddScoped<IStudentServices, StudentServices>();
-            services.AddAutoMapper(typeof(StudentProfileMap));
+        {            
+            services.AddScoped<IUnidadServices, UnidadServices>();         
+            services.AddAutoMapper(typeof(UnidadProfileMap));
 
             return services;
         }

@@ -1,50 +1,47 @@
 ﻿using Common.Helpers;
 using Common.Utilities.Resource;
 using Common.Utilities.Services;
-using DataAccess.Core.Contract;
 using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System;
+using DataAccess.Core.Contract;
 
 namespace DataAccess.Core.Implements
 {
-    public class StudentRepository : IStudentRepository
+    public class UnidadRepository : IUnidadRepository
     {
         #region Propierties
-        private readonly DbCrudContext context;
-        private readonly ILogger<StudentRepository> _logger;
+        private readonly DbCrudContext context;        
         #endregion
 
         #region Contructor
-        public StudentRepository(DbCrudContext context,ILogger<StudentRepository> logger)
+        public UnidadRepository(DbCrudContext context)
         {
-            this.context = context;
-            this._logger = logger;
+            this.context = context;            
         }
-        
+
         #endregion
 
         #region Method
-        public async Task<Response<Object>> GetStudents()
+        public async Task<Response<Object>> GetAll()
         {
             Response<Object> response = new();
             try
             {
-                List<Models.Student> query = await context.Student.ToListAsync();
+                List<Unidad> query = await context.Unidades.Where(x=> x.Estado == 1).ToListAsync();
 
                 response = new()
                 {
                     Message = MessageExtension.AddMessageList(Message_es.ConsultaExitosa),
                     ObjectResponse = query,
                     Status = true
-                };                
-                
+                };
+
                 return await Task.FromResult(response);
             }
             catch (Exception ex)
@@ -58,19 +55,17 @@ namespace DataAccess.Core.Implements
             }
         }
 
-        public async Task<Response<bool>> UpdateStudent(StudentDto _student)
+        public async Task<Response<bool>> Update(UnidadDto request)
         {
             Response<bool> response = new();
             try
             {
-                var student = context.Student.Where(x => x.Id == _student.Id).FirstOrDefault();
+                var unidad = context.Unidades.Where(x => x.Id == request.Id).FirstOrDefault();
 
-                student.Age = _student.Age;
-                student.Career = _student.Career;
-                student.FirstName = _student.FirstName;
-                student.LastName = _student.LastName;
-                student.UserName = _student.UserName;
-                context.Update(student);
+                unidad.Estado = request.Estado;
+                unidad.Descripcion = request.Descripcion;
+                
+                context.Update(unidad);
                 context.SaveChanges();
 
                 response = new()
@@ -93,19 +88,18 @@ namespace DataAccess.Core.Implements
             }
         }
 
-        public async Task<Response<bool>> CreateStudent(StudentDto _student)
+        public async Task<Response<bool>> Create(UnidadDto request)
         {
             Response<bool> response = new();
             try
             {
-                Student student = new();
-
-                student.Age = _student.Age;
-                student.Career = _student.Career;
-                student.FirstName = _student.FirstName;
-                student.LastName = _student.LastName;
-                student.UserName = _student.UserName;
-                context.Add(student);
+                Unidad unidad = new()
+                {
+                    Descripcion = request.Descripcion,
+                    Estado = request.Estado,
+                };
+               
+                context.Add(unidad);
                 context.SaveChanges();
 
                 response = new()
@@ -128,14 +122,16 @@ namespace DataAccess.Core.Implements
             }
         }
 
-        public async Task<Response<bool>> DeleteByIdStudent(int id)
+        public async Task<Response<bool>> DeleteById(int id)
         {
             Response<bool> response = new();
             try
             {
-                var student = context.Student.Where(x => x.Id == id).FirstOrDefault();
+                var unidad = context.Unidades.Where(x => x.Id == id).FirstOrDefault();
 
-                context.Remove(student);
+                unidad.Estado = 0;
+
+                context.Update(unidad);
                 context.SaveChanges();
 
                 response = new()
@@ -156,43 +152,7 @@ namespace DataAccess.Core.Implements
                     Message = MessageExtension.AddMessageList(Message_es.DeleteError)
                 };
             }
-        }
-
-        public async Task<Response<StudentDto>> GetByIdStudent(int id)
-        {
-            Response<StudentDto> response = new();
-            try
-            {
-                var student = context.Student.Where(x => x.Id == id).FirstOrDefault();
-                StudentDto studentDto = new()
-                {
-                    Id = student.Id,
-                    Age = student.Age,
-                    Career = student.Career,
-                    FirstName = student.FirstName,
-                    LastName = student.LastName,
-                    UserName = student.UserName,
-                };
-
-                response = new()
-                {
-                    Status = true,
-                    ObjectResponse = studentDto,
-                    Message = MessageExtension.AddMessageList(Message_es.ConsultaExitosa)
-                };
-
-                return await Task.FromResult(response);
-            }
-            catch (Exception)
-            {
-                return new Response<StudentDto>
-                {
-                    Status = false,
-                    ObjectResponse = null,
-                    Message = MessageExtension.AddMessageList(Message_es.ConsultaNotFound)
-                };
-            }
-        }
+        }        
         #endregion
     }
 }
