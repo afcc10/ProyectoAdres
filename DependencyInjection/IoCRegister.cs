@@ -17,6 +17,8 @@ namespace DependencyInjection
         {            
             services.AddScoped<IUnidadRepository, UnidadRepository>();
             services.AddScoped<IServicioRepository, ServicioRepository>();
+            services.AddScoped<IProveedorRepository, ProveedorRepository>();
+            services.AddScoped<IAdquisicionRepository, AdquisicionRepository>();
 
             return services;
         }
@@ -25,8 +27,13 @@ namespace DependencyInjection
         {            
             services.AddScoped<IUnidadServices, UnidadServices>();
             services.AddScoped<IServicioServices, ServicioServices>();
+            services.AddScoped<IProveedorServices, ProveedorServices>();
+            services.AddScoped<IAdquisicionesServices, AdquisicionesServices>();
+
             services.AddAutoMapper(typeof(UnidadProfileMap));
             services.AddAutoMapper(typeof(ServicioProfileMap));
+            services.AddAutoMapper(typeof(ProveedorProfileMap));
+            services.AddAutoMapper(typeof(AdquisicionProfileMap));
 
             return services;
         }

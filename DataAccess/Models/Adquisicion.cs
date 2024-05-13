@@ -17,6 +17,8 @@ namespace DataAccess.Models
         public int Cantidad { get; set; }
         [Column("Valor_Unitario")]
         public decimal Valor_Unitario { get; set; }
+        [Column("Valor_Total")]
+        public decimal Valor_Total { get; set; }
         [Column("Fecha_Adquisicion")]
         public string Fecha_Adquisicion { get; set; }
         [Column("Id_proveedor")]
