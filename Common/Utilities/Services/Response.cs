@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Models.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Common.Utilities.Services
 {
@@ -18,6 +20,11 @@ namespace Common.Utilities.Services
             this.Status = status;
             this.Message = message;
             this.ObjectResponse = objectResponse;
+        }
+
+        public static implicit operator Response<T>(Response<UnidadDto> v)
+        {
+            throw new NotImplementedException();
         }
     }
     public class MessageResult

@@ -3,29 +3,25 @@ using Common.Helpers;
 using Common.Utilities.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Models.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Crud_sqlLite.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class StudentController : ControllerBase
+    public class ProveedorController : ControllerBase
     {
         #region Propierties
-        private readonly IStudentServices Service;
-        private readonly ILogger<StudentController> _logger;
+        private readonly IProveedorServices Service;
         #endregion
 
         #region Constructor
-        public StudentController(IStudentServices service, ILogger<StudentController> logger)
+        public ProveedorController(IProveedorServices service)
         {
             Service = service;
-            _logger = logger;
         }
         #endregion
 
@@ -36,18 +32,18 @@ namespace Crud_sqlLite.Controllers
         /// <author>Andres Cabezas</author>
         [HttpGet]
         [Route("GetAll")]
-        [ProducesResponseType(typeof(Response<List<StudentDto>>), StatusCodes.Status200OK)]
-        public async Task<Response<List<StudentDto>>> Get()
+        [ProducesResponseType(typeof(Response<List<ProveedorDto>>), StatusCodes.Status200OK)]
+        public async Task<Response<List<ProveedorDto>>> GetAll()
         {
-            Response<List<StudentDto>> response;
+            Response<List<ProveedorDto>> response;
             try
             {
-                response = await Service.GetStudents();
+                response = await Service.GetAll();
                 return response;
             }
             catch (Exception ex)
             {
-                return new Response<List<StudentDto>>
+                return new Response<List<ProveedorDto>>
                 {
                     Status = false,
                     Message = MessageExtension.AddMessageList(ex.Message)
@@ -63,12 +59,12 @@ namespace Crud_sqlLite.Controllers
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
-        public async Task<Response<bool>> Post(StudentDto student)
+        public async Task<Response<bool>> Post(ProveedorDto request)
         {
             Response<bool> response;
             try
             {
-                response = await Service.CreateStudent(student);
+                response = await Service.Create(request);
                 return response;
             }
             catch (Exception ex)
@@ -89,12 +85,12 @@ namespace Crud_sqlLite.Controllers
         [HttpPut]
         [Route("Update")]
         [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
-        public async Task<Response<bool>> Update(StudentDto student)
+        public async Task<Response<bool>> Update(ProveedorDto request)
         {
             Response<bool> response;
             try
             {
-                response = await Service.UpdateStudent(student);
+                response = await Service.Update(request);
                 return response;
             }
             catch (Exception ex)
@@ -107,31 +103,6 @@ namespace Crud_sqlLite.Controllers
             }
         }
 
-        /// <summary>
-        /// obtener estudiantes by id
-        /// </summary>
-        /// <returns>Response studentdto</returns>
-        /// <author>Andres Cabezas</author>
-        [HttpGet]
-        [Route("GetById")]
-        [ProducesResponseType(typeof(Response<StudentDto>), StatusCodes.Status200OK)]
-        public async Task<Response<StudentDto>> GetById(int id)
-        {
-            Response<StudentDto> response;
-            try
-            {
-                response = await Service.GetByIdStudent(id);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new Response<StudentDto>
-                {
-                    Status = false,
-                    Message = MessageExtension.AddMessageList(ex.Message)
-                };
-            }
-        }
 
         /// <summary>
         /// eliminar by id
@@ -146,7 +117,7 @@ namespace Crud_sqlLite.Controllers
             Response<bool> response;
             try
             {
-                response = await Service.DeleteByIdStudent(id);
+                response = await Service.DeleteById(id);
                 return response;
             }
             catch (Exception ex)
