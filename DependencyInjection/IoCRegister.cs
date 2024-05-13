@@ -16,14 +16,17 @@ namespace DependencyInjection
         public static IServiceCollection AddRepository(IServiceCollection services)
         {            
             services.AddScoped<IUnidadRepository, UnidadRepository>();
+            services.AddScoped<IServicioRepository, ServicioRepository>();
 
             return services;
         }
 
         public static IServiceCollection AddServices(IServiceCollection services)
         {            
-            services.AddScoped<IUnidadServices, UnidadServices>();         
+            services.AddScoped<IUnidadServices, UnidadServices>();
+            services.AddScoped<IServicioServices, ServicioServices>();
             services.AddAutoMapper(typeof(UnidadProfileMap));
+            services.AddAutoMapper(typeof(ServicioProfileMap));
 
             return services;
         }

@@ -8,42 +8,42 @@ using System.Threading.Tasks;
 
 namespace Business.Implement
 {
-    public class UnidadServices : IUnidadServices
+    public class ProveedorServices : IProveedorServices
     {
         #region Propierties
-        private readonly IUnidadRepository _repository;
+        private readonly IProveedorRepository _repository;
         private readonly IMapper _mapper;
         #endregion
 
         #region Constructor
-        public UnidadServices(IUnidadRepository repository, IMapper mapper)
+        public ProveedorServices(IProveedorRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
         #endregion
 
-        public async Task<Response<List<UnidadDto>>> GetAll()
+        public async Task<Response<List<ProveedorDto>>> GetAll()
         {
             var result = await _repository.GetAll();
 
-            Response<List<UnidadDto>> response = new()
+            Response<List<ProveedorDto>> response = new()
             {
                 Status = result.Status,
                 Message = result.Message,
-                ObjectResponse = result.ObjectResponse != null ? _mapper.Map<List<UnidadDto>>(result.ObjectResponse)
+                ObjectResponse = result.ObjectResponse != null ? _mapper.Map<List<ProveedorDto>>(result.ObjectResponse)
                                     : null
             };
             return response;
         }
 
-        public async Task<Response<bool>> Update(UnidadDto request)
+        public async Task<Response<bool>> Update(ProveedorDto request)
         {
             var result = await _repository.Update(request);
             return result;
         }
 
-        public async Task<Response<bool>> Create(UnidadDto request)
+        public async Task<Response<bool>> Create(ProveedorDto request)
         {
             var result = await _repository.Create(request);
             return result;
@@ -53,6 +53,6 @@ namespace Business.Implement
         {
             var result = await _repository.DeleteById(id);
             return result;
-        }       
+        }
     }
 }

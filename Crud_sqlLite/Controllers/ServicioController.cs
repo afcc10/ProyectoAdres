@@ -12,16 +12,16 @@ namespace Crud_sqlLite.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UnidadController : ControllerBase
+    public class ServicioController : ControllerBase
     {
         #region Propierties
-        private readonly IUnidadServices Service;
+        private readonly IServicioServices Service;
         #endregion
 
         #region Constructor
-        public UnidadController(IUnidadServices service)
+        public ServicioController(IServicioServices service)
         {
-            Service = service;            
+            Service = service;
         }
         #endregion
 
@@ -32,10 +32,10 @@ namespace Crud_sqlLite.Controllers
         /// <author>Andres Cabezas</author>
         [HttpGet]
         [Route("GetAll")]
-        [ProducesResponseType(typeof(Response<List<UnidadDto>>), StatusCodes.Status200OK)]
-        public async Task<Response<List<UnidadDto>>> GetAll()
+        [ProducesResponseType(typeof(Response<List<ServicioDto>>), StatusCodes.Status200OK)]
+        public async Task<Response<List<ServicioDto>>> GetAll()
         {
-            Response<List<UnidadDto>> response;
+            Response<List<ServicioDto>> response;
             try
             {
                 response = await Service.GetAll();
@@ -43,7 +43,7 @@ namespace Crud_sqlLite.Controllers
             }
             catch (Exception ex)
             {
-                return new Response<List<UnidadDto>>
+                return new Response<List<ServicioDto>>
                 {
                     Status = false,
                     Message = MessageExtension.AddMessageList(ex.Message)
@@ -59,7 +59,7 @@ namespace Crud_sqlLite.Controllers
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
-        public async Task<Response<bool>> Post(UnidadDto request)
+        public async Task<Response<bool>> Post(ServicioDto request)
         {
             Response<bool> response;
             try
@@ -85,7 +85,7 @@ namespace Crud_sqlLite.Controllers
         [HttpPut]
         [Route("Update")]
         [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
-        public async Task<Response<bool>> Update(UnidadDto request)
+        public async Task<Response<bool>> Update(ServicioDto request)
         {
             Response<bool> response;
             try
@@ -102,7 +102,7 @@ namespace Crud_sqlLite.Controllers
                 };
             }
         }
-        
+
 
         /// <summary>
         /// eliminar by id
@@ -129,6 +129,5 @@ namespace Crud_sqlLite.Controllers
                 };
             }
         }
-
     }
 }
